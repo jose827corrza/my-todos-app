@@ -11,7 +11,8 @@ object Biometric {
         title: String,
         subTitle: String,
         description: String,
-        onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit
+        onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
+        onFailed: () -> Unit
     ) {
         val executor = ContextCompat.getMainExecutor(activity)
         val biometricPrompt = BiometricPrompt(activity, executor,
@@ -19,6 +20,10 @@ object Biometric {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     onSuccess(result)
+                }
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    onFailed()
                 }
             })
 

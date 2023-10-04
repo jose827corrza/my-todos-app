@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.josedev.mytodos.screens.AuthScreen
 import com.josedev.mytodos.screens.MainScreen
 import com.josedev.mytodos.screens.SplashScreen
 
@@ -19,8 +20,11 @@ fun AppNavigation(activity: FragmentActivity) {
             composable(AppScreens.SplashScreen.route){
                 SplashScreen(navController)
             }
+            composable(AppScreens.AuthScreen.route){
+                AuthScreen(activity, navController)
+            }
             composable(AppScreens.MainScreen.route){
-                MainScreen(activity)
+                MainScreen()
             }
     }
 }
