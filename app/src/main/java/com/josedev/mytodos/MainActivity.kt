@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import com.josedev.mytodos.auth.AuthClass
+import com.josedev.mytodos.navigation.AppNavigation
 import com.josedev.mytodos.ui.theme.MyTodosTheme
 
 // ComponentActivity() is replaced by the AppCompat to allow the use of biometric
@@ -41,90 +43,92 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Auth()
+                    // Auth() // Biometric
+                    AppNavigation()
                 }
             }
         }
         //Setup
-        setupAuth()
+        AuthClass().setupAuth(this, this@MainActivity)
+//        setupAuth()
     }
 
-    private var canAuthenticate = false
-    // Because this var is defined in execution time, is used the lateinit
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
-    //methods
-    private fun setupAuth() {
-        if(BiometricManager.from(this).canAuthenticate(
-                BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                            BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-            == BiometricManager.BIOMETRIC_SUCCESS)
-        {
-            canAuthenticate = true
-            promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometrical Auth")
-                .setSubtitle("Auth using your sensor")
-                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                        BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                .build()
-        }
-    }
-
-    private fun authenticate(auth: (auth:Boolean) -> Unit){
-        if(canAuthenticate){
-            BiometricPrompt(this, ContextCompat.getMainExecutor(this),
-                object : BiometricPrompt.AuthenticationCallback(){
-                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                        super.onAuthenticationSucceeded(result)
-                        auth(true)
-                    }
-                }).authenticate(promptInfo)
-        }else{
-            auth(true)
-        }
-    }
-
-
-    //Composables
-    @Composable
-    fun Auth() {
-        // Using Compose  states are used
-        var auth by remember {
-            mutableStateOf(false)
-        }
-
-        Column(
-            modifier = Modifier
-                .background(if(auth) Color.Green else Color.Red)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Hi there, auth to follow",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = {
-                if(auth){
-                    auth = false
-                }else{
-                    authenticate {
-                        auth = it
-                    }
-                }
-            }) {
-                Text(if(!auth) "Authenticate" else "Close")
-            }
-        }
-    }
+//    private var canAuthenticate = false
+//    // Because this var is defined in execution time, is used the lateinit
+//    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+//    //methods
+//    fun setupAuth() {
+//        if(BiometricManager.from(this).canAuthenticate(
+//                BiometricManager.Authenticators.BIOMETRIC_STRONG or
+//                            BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+//            == BiometricManager.BIOMETRIC_SUCCESS)
+//        {
+//            canAuthenticate = true
+//            promptInfo = BiometricPrompt.PromptInfo.Builder()
+//                .setTitle("Biometrical Auth")
+//                .setSubtitle("Auth using your sensor")
+//                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG or
+//                        BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+//                .build()
+//        }
+//    }
+//
+//    fun authenticate(auth: (auth:Boolean) -> Unit){
+//        if(canAuthenticate){
+//            BiometricPrompt(this, ContextCompat.getMainExecutor(this),
+//                object : BiometricPrompt.AuthenticationCallback(){
+//                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+//                        super.onAuthenticationSucceeded(result)
+//                        auth(true)
+//                    }
+//                }).authenticate(promptInfo)
+//        }else{
+//            auth(true)
+//        }
+//    }
+//
+//
+//    //Composables
+//    @Composable
+//    fun Auth() {
+//        // Using Compose  states are used
+//        var auth by remember {
+//            mutableStateOf(false)
+//        }
+//
+//        Column(
+//            modifier = Modifier
+//                .background(if (auth) Color.Green else Color.Red)
+//                .fillMaxSize(),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.Center
+//        ) {
+//            Text(
+//                text = "Hi there, auth to follow",
+//                fontSize = 22.sp,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Button(onClick = {
+//                if(auth){
+//                    auth = false
+//                }else{
+//                    authenticate {
+//                        auth = it
+//                    }
+//                }
+//            }) {
+//                Text(if(!auth) "Authenticate" else "Close")
+//            }
+//        }
+//    }
 
 
     @Preview(showSystemUi = true)
     @Composable
     fun GreetingPreview() {
         MyTodosTheme {
-            Auth()
+            // Auth()
         }
     }
 }

@@ -70,4 +70,7 @@ dependencies {
     //Biometric
     implementation("androidx.biometric:biometric:1.1.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+
+    // SplashScreen
+    implementation("androidx.navigation:navigation-compose:2.5.0")
 }
