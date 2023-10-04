@@ -1,6 +1,7 @@
 package com.josedev.mytodos.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -8,7 +9,7 @@ import com.josedev.mytodos.screens.MainScreen
 import com.josedev.mytodos.screens.SplashScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(activity: FragmentActivity) {
     val navController = rememberNavController()
 
     NavHost(
@@ -19,7 +20,7 @@ fun AppNavigation() {
                 SplashScreen(navController)
             }
             composable(AppScreens.MainScreen.route){
-                MainScreen()
+                MainScreen(activity)
             }
     }
 }
