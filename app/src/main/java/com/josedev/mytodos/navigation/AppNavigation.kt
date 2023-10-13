@@ -5,12 +5,15 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.josedev.mytodos.domain.entity.ToDoState
+import com.josedev.mytodos.domain.repository.ToDoEvent
+import com.josedev.mytodos.presentation.ToDoViewModel
 import com.josedev.mytodos.screens.AuthScreen
 import com.josedev.mytodos.screens.MainScreen
 import com.josedev.mytodos.screens.SplashScreen
 
 @Composable
-fun AppNavigation(activity: FragmentActivity) {
+fun AppNavigation(activity: FragmentActivity, state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
     val navController = rememberNavController()
 
     NavHost(
@@ -24,7 +27,7 @@ fun AppNavigation(activity: FragmentActivity) {
                 AuthScreen(activity, navController)
             }
             composable(AppScreens.MainScreen.route){
-                MainScreen()
+                MainScreen(state, onEvent)
             }
     }
 }
