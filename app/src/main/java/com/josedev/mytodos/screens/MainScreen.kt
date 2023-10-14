@@ -1,17 +1,21 @@
 package com.josedev.mytodos.screens
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -20,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,8 +36,7 @@ import com.josedev.mytodos.presentation.ToDoViewModel
 @Composable
 fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
     Scaffold (
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier,
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 onEvent(ToDoEvent.ShowDialog)
@@ -52,10 +56,30 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxSize()
         ){
+            item {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Green),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text = "My Todos",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+
+                }
+                Divider(
+                    color = Color.Black,
+                    thickness = 3.dp
+                )
+            }
             items(state.todos){todo ->
                 Row (
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(10.dp)
                 ){
                     Column (
                         modifier = Modifier.weight(1f)
@@ -72,7 +96,7 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
                         )
                     }
                     IconButton(onClick = { onEvent(ToDoEvent.DeleteToDo(todo))}) {
-                        Icon(imageVector = Icons.Default.Check, contentDescription = "Todo complete")
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = "Todo complete")
                     }
 
                 }
