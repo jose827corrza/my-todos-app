@@ -8,6 +8,7 @@ import com.josedev.mytodos.domain.entity.ToDoState
 import com.josedev.mytodos.domain.repository.ToDoDao
 import com.josedev.mytodos.domain.repository.ToDoEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -22,15 +23,13 @@ import javax.inject.Inject
 class ToDoViewModel @Inject constructor(
     private val dao: ToDoDao
 ) : ViewModel() {
-    private val _priority = MutableStateFlow(Priority.HIGH)
-    private val _state = MutableStateFlow(ToDoState())
-    private val _todos = _priority.flatMapLatest {priority ->
-        when(priority){
-            Priority.LOW -> dao.groupByPriority()
-            Priority.MED -> dao.groupByPriority()
-            Priority.HIGH -> dao.groupByPriority()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+//    private val _priority = MutableStateFlow(Priority.HIGH)
+    val _state = MutableStateFlow(ToDoState())
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _todos = _state.flatMapLatest {todoState ->
+        dao.getAllToDos()
+
+    }
 
     val state = combine(_state, _todos){state, todos ->
         state.copy(
@@ -47,6 +46,7 @@ class ToDoViewModel @Inject constructor(
                 }
             }
             ToDoEvent.HideDialog -> {
+                // state updated
                 _state.update {
                     it.copy(
                         isAddingTodo = false
@@ -64,15 +64,15 @@ class ToDoViewModel @Inject constructor(
                 val todo = ToDo(
                     title = title,
                     description = description,
-                    isComplete = false,
-                    priority = state.value.priority,
+//                    isComplete = false,
+//                    priority = state.value.priority,
                     todoId = ranUUID.toString()
                 )
 
                 viewModelScope.launch {
                     dao.upsertToDo(todo)
                 }
-
+                // state updated
                 _state.update {
                     it.copy(
                         isAddingTodo = false,
@@ -84,27 +84,29 @@ class ToDoViewModel @Inject constructor(
                 }
             }
             is ToDoEvent.SetDescription -> {
+                // state updated
                 _state.update {
                     it.copy(
                         description = event.description
                     )
                 }
             }
-            is ToDoEvent.SetIsComplete -> {
-                _state.update {
-                    it.copy(
-                        isComplete = event.isComplete
-                    )
-                }
-            }
-            is ToDoEvent.SetPriority -> {
-                _state.update {
-                    it.copy(
-                        priority = event.priority
-                    )
-                }
-            }
+//            is ToDoEvent.SetIsComplete -> {
+//                _state.update {
+//                    it.copy(
+//                        isComplete = event.isComplete
+//                    )
+//                }
+//            }
+//            is ToDoEvent.SetPriority -> {
+//                _state.update {
+//                    it.copy(
+//                        priority = event.priority
+//                    )
+//                }
+//            }
             is ToDoEvent.SetTitle -> {
+                // state updated
                 _state.update {
                     it.copy(
                         title = event.title
@@ -112,6 +114,7 @@ class ToDoViewModel @Inject constructor(
                 }
             }
             ToDoEvent.ShowDialog -> {
+                // state updated
                 _state.update {
                     it.copy(
                         isAddingTodo = true

@@ -19,6 +19,6 @@ interface ToDoDao {
     @Query("SELECT * FROM todos")
     fun getAllToDos(): Flow<List<ToDo>>
 
-    @Query("SELECT * FROM todos GROUP BY priority")
-    fun groupByPriority(): Flow<List<ToDo>>
+//    @Query("SELECT * FROM todos GROUP BY priority")
+//    fun groupByPriority(): Flow<List<ToDo>>
 }
