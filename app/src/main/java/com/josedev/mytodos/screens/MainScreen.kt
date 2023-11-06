@@ -61,7 +61,8 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.Green),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+
                 ){
                     Text(
                         text = "My Todos",
@@ -90,7 +91,7 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = todo.title,
+                            text = todo.description,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Light
                         )

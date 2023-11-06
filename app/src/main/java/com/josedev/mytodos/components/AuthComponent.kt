@@ -57,9 +57,9 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
                     // TODO
                 Biometric.authenticate(
                     activity= activity,
-                    title = "Biometrical Auth",
+                    title = "Biometric Auth",
                     subTitle = "Auth using your sensor",
-                    description = "Auth to access to your todos",
+                    description = "Only auth users are allowed to see the todos",
                     onSuccess = {
                                     auth = true
                                     navController.navigate(AppScreens.MainScreen.route)
