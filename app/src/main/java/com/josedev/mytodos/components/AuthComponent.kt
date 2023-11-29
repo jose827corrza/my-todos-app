@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.josedev.mytodos.auth.Biometric
 import com.josedev.mytodos.navigation.AppScreens
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -45,38 +46,40 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Hi there, auth to follow",
+            text = if(!auth)"Hi there, auth to follow" else "Welcome Back",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {
-            if(auth){
-                auth = false
-            }else{
-                    // TODO
+        if(!auth){
+            Button(onClick = {
+                // TODO
                 Biometric.authenticate(
                     activity= activity,
                     title = "Biometric Auth",
                     subTitle = "Auth using your sensor",
                     description = "Only auth users are allowed to see the todos",
                     onSuccess = {
-                                    auth = true
-                                    navController.navigate(AppScreens.MainScreen.route)
-                                },
+                        auth = true
+                        navController.navigate(AppScreens.MainScreen.route)
+
+                    },
                     onFailed = {
 
-                            Toast.makeText(
-                                context,
-                                "Authentication failed",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                        Toast.makeText(
+                            context,
+                            "Authentication failed",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
                     })
 
+
+            }) {
+//            Text(if(!auth) "Authenticate" else "Close")
+                Text("Authenticate")
             }
-        }) {
-            Text(if(!auth) "Authenticate" else "Close")
         }
+
     }
 }
