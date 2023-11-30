@@ -68,10 +68,19 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
 
                         Toast.makeText(
                             context,
-                            "Authentication failed",
+                            "Authentication failed, be sure you have access",
                             Toast.LENGTH_SHORT
                         )
                             .show()
+                    },
+                    onError = {
+                        Toast.makeText(
+                            context,
+                            "Authentication Error, you might want to enable Pin Lock and Fingerprint",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        navController.navigate(AppScreens.MainScreen.route)
                     })
 
 
