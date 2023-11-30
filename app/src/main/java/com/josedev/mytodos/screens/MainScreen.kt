@@ -42,8 +42,6 @@ import com.josedev.mytodos.presentation.ToDoViewModel
 fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
     Scaffold (
         modifier = Modifier,
-        containerColor = Color.Red
-        ,
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 onEvent(ToDoEvent.ShowDialog)
