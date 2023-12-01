@@ -15,7 +15,7 @@ android {
         applicationId = "com.josedev.mytodos"
         minSdk = 30
         targetSdk = 33
-        versionCode = 2
+        versionCode = 3
         versionName = "0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
