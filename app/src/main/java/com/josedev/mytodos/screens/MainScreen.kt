@@ -25,9 +25,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.josedev.mytodos.domain.entity.ToDoState
 import com.josedev.mytodos.domain.repository.ToDoEvent
 import com.josedev.mytodos.presentation.ToDoViewModel
@@ -56,6 +61,9 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxSize()
         ){
+//            item {
+//                BannerComposable()
+//            }
             item {
                 Row (
                     modifier = Modifier
@@ -104,4 +112,21 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
             }
         }
     }
+
+
+}
+
+
+@Composable
+fun BannerComposable() {
+    val adWidth = LocalConfiguration.current.screenWidthDp
+    
+    AndroidView(factory = {context ->
+        val adView = AdView(context)
+        adView.setAdSize(AdSize(adWidth, 50))
+        adView.apply {
+            adUnitId = "ca-app-pub-3940256099942544/6300978111"
+            loadAd(AdRequest.Builder().build())
+        }
+    })
 }

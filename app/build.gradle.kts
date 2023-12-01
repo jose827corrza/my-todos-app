@@ -15,8 +15,8 @@ android {
         applicationId = "com.josedev.mytodos"
         minSdk = 30
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -89,4 +89,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     ksp("com.google.dagger:dagger-compiler:2.48") // Dagger compiler
     ksp("com.google.dagger:hilt-compiler:2.48")  // Hilt compiler
+
+    // Admob
+    implementation("com.google.android.gms:play-services-ads:22.5.0")
 }
