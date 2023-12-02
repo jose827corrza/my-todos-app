@@ -92,4 +92,8 @@ dependencies {
 
     // Admob
     implementation("com.google.android.gms:play-services-ads:22.5.0")
+
+    // Date Picker
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+//    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.6") // Only needed if minSdk below 26
 }
