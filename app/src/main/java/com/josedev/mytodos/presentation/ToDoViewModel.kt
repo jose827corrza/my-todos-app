@@ -56,6 +56,8 @@ class ToDoViewModel @Inject constructor(
             ToDoEvent.SaveToDo -> {
                 val title = state.value.title
                 val description = state.value.description
+                val taskDate = state.value.taskDate
+                val taskTime = state.value.taskTime
                 val ranUUID = UUID.randomUUID()
 
                 if(title.isBlank()){
@@ -66,7 +68,9 @@ class ToDoViewModel @Inject constructor(
                     description = description,
 //                    isComplete = false,
 //                    priority = state.value.priority,
-                    todoId = ranUUID.toString()
+                    todoId = ranUUID.toString(),
+                    taskDate = taskDate,
+                    taskTime = taskTime,
                 )
 
                 viewModelScope.launch {
