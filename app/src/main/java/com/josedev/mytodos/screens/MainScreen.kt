@@ -103,6 +103,16 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Light
                         )
+                        Text(
+                            text = todo.taskDate.toString(),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light
+                        )
+                        Text(
+                            text = todo.taskTime.toString(),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light
+                        )
                     }
                     IconButton(onClick = { onEvent(ToDoEvent.DeleteToDo(todo))}) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = "Todo complete")

@@ -87,6 +87,20 @@ class ToDoViewModel @Inject constructor(
                     )
                 }
             }
+            is ToDoEvent.SetDate -> {
+                _state.update {
+                    it.copy(
+                        taskDate = event.date
+                    )
+                }
+            }
+            is ToDoEvent.SetTime -> {
+                _state.update {
+                    it.copy(
+                        taskTime = event.time
+                    )
+                }
+            }
             is ToDoEvent.SetDescription -> {
                 // state updated
                 _state.update {

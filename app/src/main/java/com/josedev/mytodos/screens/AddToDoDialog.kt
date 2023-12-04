@@ -148,6 +148,7 @@ fun AddContactDialog(
             }
         ){
             pickedDate = it
+            onEvent(ToDoEvent.SetDate(pickedDate))
         }
     }
 
@@ -166,6 +167,7 @@ fun AddContactDialog(
 //            timeRange = LocalTime.MIDNIGHT..LocalTime.NOON
         ){
             pickedTime = it
+            onEvent(ToDoEvent.SetTime(pickedTime))
         }
     }
 }

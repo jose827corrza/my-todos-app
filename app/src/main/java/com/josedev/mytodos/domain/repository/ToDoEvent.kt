@@ -2,6 +2,8 @@ package com.josedev.mytodos.domain.repository
 
 import com.josedev.mytodos.domain.entity.Priority
 import com.josedev.mytodos.domain.entity.ToDo
+import java.time.LocalDate
+import java.time.LocalTime
 
 sealed interface ToDoEvent {
     object SaveToDo: ToDoEvent
@@ -9,6 +11,8 @@ sealed interface ToDoEvent {
     data class SetDescription(val description: String): ToDoEvent
 //    data class SetIsComplete(val isComplete: Boolean): ToDoEvent
 //    data class SetPriority(val priority: Priority): ToDoEvent
+    data class SetDate(val date: LocalDate): ToDoEvent
+    data class SetTime(val time: LocalTime): ToDoEvent
     object ShowDialog: ToDoEvent
     object HideDialog: ToDoEvent
     data class DeleteToDo(val todo: ToDo): ToDoEvent
