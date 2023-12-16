@@ -1,5 +1,6 @@
 package com.josedev.mytodos.presentation
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.josedev.mytodos.domain.entity.Priority
@@ -7,6 +8,7 @@ import com.josedev.mytodos.domain.entity.ToDo
 import com.josedev.mytodos.domain.entity.ToDoState
 import com.josedev.mytodos.domain.repository.ToDoDao
 import com.josedev.mytodos.domain.repository.ToDoEvent
+import com.josedev.mytodos.notification.AlarmNotificationService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +74,6 @@ class ToDoViewModel @Inject constructor(
                     taskDate = taskDate,
                     taskTime = taskTime,
                 )
-
                 viewModelScope.launch {
                     dao.upsertToDo(todo)
                 }

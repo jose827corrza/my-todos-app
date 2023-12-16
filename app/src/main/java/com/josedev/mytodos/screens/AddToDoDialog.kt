@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.josedev.mytodos.domain.repository.ToDoEvent
 import com.josedev.mytodos.domain.entity.ToDoState
+import com.josedev.mytodos.notification.AlarmNotificationService
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerColors
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
@@ -40,6 +42,8 @@ fun AddContactDialog(
     onEvent: (ToDoEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val alarmNotificationService = AlarmNotificationService(context)
     var pickedDate by remember {
         mutableStateOf(LocalDate.now())
     }
@@ -74,6 +78,7 @@ fun AddContactDialog(
         },
         confirmButton = {
             Button(onClick = {
+                alarmNotificationService.schedule(state)
                 onEvent(ToDoEvent.SaveToDo)
             }) {
                 Text(text = "Create ToDo")
@@ -143,9 +148,9 @@ fun AddContactDialog(
             initialDate = LocalDate.now(),
             title = "Pick a Date",
 //            colors = DatePickerDefaults.colors() // That's how to change colors
-            allowedDateValidator =  {
-                it.dayOfMonth % 2 == 0
-            }
+//            allowedDateValidator =  {
+//                it.dayOfMonth % 2 == 0
+//            }
         ){
             pickedDate = it
             onEvent(ToDoEvent.SetDate(pickedDate))

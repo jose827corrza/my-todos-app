@@ -1,6 +1,14 @@
 package com.josedev.mytodos.components
 
+import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,11 +33,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import com.josedev.mytodos.R
 import com.josedev.mytodos.auth.Biometric
 import com.josedev.mytodos.navigation.AppScreens
 import kotlinx.coroutines.delay
+import kotlin.math.log
 
 
 @Composable
@@ -42,6 +55,17 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
         mutableStateOf(false)
     }
 
+    var hasNotificationPermission by remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mutableStateOf(
+                ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+            )
+        } else mutableStateOf(true)
+    }
+
     Box(modifier = Modifier
         .fillMaxHeight()
         .fillMaxHeight()
@@ -50,21 +74,30 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
 
         Column(
             modifier = Modifier
-    //            .background(if (auth) Color.Green else Color.White)
+                //            .background(if (auth) Color.Green else Color.White)
                 .background(Color.White)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission(),
+                onResult = {isGranted ->
+                    hasNotificationPermission =isGranted
+                })
+
             Text(
                 text = if(!auth)"Hi there, auth to follow" else "Welcome Back",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
+
             if(!auth){
                 Button(onClick = {
                     // TODO
+
                     Biometric.authenticate(
                         activity= activity,
                         title = "Biometric Auth",
@@ -115,4 +148,5 @@ fun Auth(activity: FragmentActivity, navController: NavController) {
             )
         }
     }
+
 }

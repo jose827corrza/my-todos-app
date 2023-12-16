@@ -1,5 +1,6 @@
 package com.josedev.mytodos
 
+
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -13,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.gms.ads.MobileAds
-import com.josedev.mytodos.auth.Biometric
 import com.josedev.mytodos.navigation.AppNavigation
 import com.josedev.mytodos.presentation.ToDoViewModel
 import com.josedev.mytodos.ui.theme.MyTodosTheme
@@ -47,5 +47,6 @@ class MainActivity : AppCompatActivity() {
             // Auth()
         }
     }
+
 }
 

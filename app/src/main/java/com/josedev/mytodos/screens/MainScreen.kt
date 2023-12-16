@@ -1,6 +1,7 @@
 package com.josedev.mytodos.screens
 
 
+import android.app.NotificationManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,13 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -26,20 +27,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.NotificationCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.josedev.mytodos.MyTodosApp
+import com.josedev.mytodos.R
 import com.josedev.mytodos.domain.entity.ToDoState
 import com.josedev.mytodos.domain.repository.ToDoEvent
-import com.josedev.mytodos.presentation.ToDoViewModel
+import com.josedev.mytodos.notification.AlarmNotificationService
+import com.josedev.mytodos.notification.TaskNotificationService
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
+    val context = LocalContext.current
+    val alarmNotificationService = AlarmNotificationService(context)
     Scaffold (
         modifier = Modifier,
         floatingActionButton = {
@@ -114,7 +122,11 @@ fun MainScreen(state: ToDoState, onEvent: (ToDoEvent) -> Unit) {
                             fontWeight = FontWeight.Light
                         )
                     }
-                    IconButton(onClick = { onEvent(ToDoEvent.DeleteToDo(todo))}) {
+
+                    IconButton(onClick = {
+                        onEvent(ToDoEvent.DeleteToDo(todo))
+                        alarmNotificationService.cancel(state)
+                    }) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = "Todo complete")
                     }
 
